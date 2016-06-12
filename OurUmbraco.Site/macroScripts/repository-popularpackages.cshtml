@@ -14,7 +14,17 @@
     var qs = Request.RawUrl.Substring( Request.RawUrl.IndexOf('?')+1 );
 
     var version = "v45";
-    if(Request.QueryString["version"] != null){
+    if (Request.QueryString["fullVersion"] != null)
+    {
+        Version fullVersion;
+        if (Version.TryParse(Request.QueryString["fullVersion"], out fullVersion))
+        {
+            // Take the full version number and try to make it compatible with the db values format [LK:2016-06-12@CGRT16]
+            version = string.Concat("v", fullVersion.Major, fullVersion.Minor, fullVersion.Major > 4 ? "0" : "");
+        }
+    }
+    else if (Request.QueryString["version"] != null)
+    {
         version = Request.QueryString["version"].ToLower();
     }
 
@@ -29,7 +39,7 @@
              .Where(x => !x.NotAPackage &&
                  (string.Join("", x.UmbracoVerionsSupported).Contains("nan") ||
                     string.Join("", x.UmbracoVerionsSupported).Contains(version)));
-    }, TimeSpan.FromMinutes(10));
+    }, TimeSpan.FromSeconds(5));
 
     var pUrl = "/repo_viewproject?" + qs + "&project_id=";
     var favs = new List<IListingItem>();

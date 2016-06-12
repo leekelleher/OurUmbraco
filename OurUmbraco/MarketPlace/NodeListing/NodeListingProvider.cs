@@ -101,7 +101,7 @@ namespace OurUmbraco.MarketPlace.NodeListing
                 listingItem.NotAPackage = content.GetPropertyValue<bool>("notAPackage", false);
                 listingItem.ProjectGuid = new Guid(content.GetPropertyValue<string>("packageGuid"));
                 listingItem.Approved = content.GetPropertyValue<bool>("approved", false);
-                listingItem.UmbracoVerionsSupported = content.GetPropertyValue<string>("compatibleVersions", "").Split(';');
+                listingItem.UmbracoVerionsSupported = content.GetPropertyValue<string>("compatibleVersions", "").Split(',');
                 listingItem.NETVersionsSupported = (content.GetPropertyValue<string>("dotNetVersion", "") != null) ? content.GetPropertyValue<string>("dotNetVersion", "").Split(';') : "".Split(';');
                 listingItem.TrustLevelSupported = content.GetPropertyAsTrustLevel("trustLevelSupported");
                 listingItem.TermsAgreementDate = content.GetPropertyValue<DateTime>("termsAgreementDate");
